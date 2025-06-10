@@ -80,6 +80,9 @@ npm/microtip@0.2.2/microtip.min.css
                     Generate markdown
                 </button>
                 <button class="py-1 px-2 mx-0 my-1" onclick="generateLink('iframe')" type="button">Embed</button>
+                <button class="py-1 px-2 mx-0 my-1" onclick="showQrCode()" type="button">
+                    QR Code
+                </button>
             </div>
         </div>
     </div>
@@ -147,6 +150,20 @@ npm/microtip@0.2.2/microtip.min.css
         </div>
     </div>
 
+    <div id="qr-modal" class="modal" data-micromodal-close>
+        <div tabindex="-1" class="modal-overlay">
+            <div role="dialog" class="modal-content shadow-bottom p-3 m-3">
+                <div class="modal-close" data-micromodal-close><span class="icon-close"></span></div>
+                <h2 class="mt-0">Scan the QR code to open this paste on your phone</h2>
+                <div id="qr-code" class="text-center"></div>
+                <div class="text-center">
+                    <button class="py-1 px-2 mx-1" data-micromodal-close type="button">Close</button>
+                    <button class="py-1 px-2 mx-1" onclick="openInNewTab()" type="button">Open in new tab</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/combine/
 npm/lzma@2.3.2/src/lzma.min.js,
 npm/slim-select@1.27.1/dist/slimselect.min.js,
@@ -161,6 +178,7 @@ npm/codemirror@5.65.5/addon/scroll/simplescrollbars.js,
 npm/codemirror@5.65.5/mode/meta.min.js,
 npm/showdown@2.1.0/dist/showdown.min.js
 "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="script.js"></script>
 </body>
 

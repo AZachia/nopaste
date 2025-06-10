@@ -349,6 +349,23 @@ document.addEventListener('mouseup', () => {
 });
 
 
+const showQrCode = () => {
+    const qrCode = byId('qr-code');
+    const url = location.href.replace(/[?&]readonly/, '');
+    qrCode.innerHTML = '';
+    new QRCode(qrCode, {
+        text: url,
+        width: 400,
+        height: 400,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H,
+        useSVG: true
+    });
+    MicroModal.show('qr-modal');
+};
+
+
 
 // Only for tests purposes
 const testAllModes = () => {

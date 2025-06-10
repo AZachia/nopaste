@@ -294,6 +294,15 @@ button:hover {
     background-color: #3b3b47 !important;
 }
 
+#qr-code {
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    border: 20px solid white;
+    width: 440px;
+    height: 440px;
+}
+
 /* Fonts */
 @font-face {
     font-family: 'JetBrainsMono';
