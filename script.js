@@ -31,7 +31,25 @@ const initCodeEditor = () => {
     statsEl = byId('stats');
     editor.on('change', () => {
         statsEl.innerHTML = `Length: ${editor.getValue().length} |  Lines: ${editor['doc'].size}`;
+        // hideCopyBar();
+
+
+
+        const base64 = btoa(unescape(encodeURIComponent(editor.getValue())));
+        const newUrl = location.protocol + '//' + location.host + location.pathname + '#' + base64;
+        window.location.replace(newUrl);
+        console.log('Updated URL:', newUrl);
+        // update the stats
+        statsEl.innerHTML = `Length: ${editor.getValue().length} |  Lines: ${editor['doc'].size}`;
+        // update the title
+        const language = select.selected();
+        document.title = language && language !== 'Plain Text' ? `NoPaste - ${language} code snippet` : 'NoPaste';
+        
+        
+        // hide the copy bar
         hideCopyBar();
+
+
     });
 };
 
@@ -171,6 +189,7 @@ const buildUrl = (rawData, mode) => {
     }
     return url;
 };
+
 
 // Transform a compressed base64 string into a plain text string
 const decompress = (base64, cb) => {
