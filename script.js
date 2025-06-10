@@ -30,22 +30,26 @@ const initCodeEditor = () => {
 
     statsEl = byId('stats');
     editor.on('change', () => {
-        statsEl.innerHTML = `Length: ${editor.getValue().length} |  Lines: ${editor['doc'].size}`;
-        // hideCopyBar();
 
 
+        const data = editor.getValue();
+        compress(data, (base64, err) => {
+            if (err) {
+                alert('Failed to compress data: ' + err);
+                return;
+            }
+            const url = buildUrl(base64, "");
+            statsEl.innerHTML = `Data length: ${data.length} |  Lines: ${editor['doc'].size}  |  Link length: ${url.length} | Compression ratio: ${Math.round(
+                (100 * url.length) / data.length
+            )}%`;
 
-        const base64 = btoa(unescape(encodeURIComponent(editor.getValue())));
-        const newUrl = location.protocol + '//' + location.host + location.pathname + '#' + base64;
-        window.location.replace(newUrl);
-        console.log('Updated URL:', newUrl);
-        // update the stats
-        statsEl.innerHTML = `Length: ${editor.getValue().length} |  Lines: ${editor['doc'].size}`;
-        // update the title
-        const language = select.selected();
-        document.title = language && language !== 'Plain Text' ? `NoPaste - ${language} code snippet` : 'NoPaste';
-        
-        
+            // update the url
+            window.location.replace(url);
+        });
+
+
+        updateMdPreview();
+
         // hide the copy bar
         hideCopyBar();
 
@@ -67,6 +71,13 @@ const initLangSelector = () => {
             editor.setOption('mode', language.mime);
             CodeMirror.autoLoadMode(editor, language.mode);
             document.title = e.text && e.text !== 'Plain Text' ? `NoPaste - ${e.text} code snippet` : 'NoPaste';
+
+            if (["text/x-markdown", "text/x-gfm", "text/html"].includes(language.mime)) {
+                previewMarkdown();
+            }
+            else {
+                previewMarkdown(false);
+            }
         },
     });
 
@@ -82,7 +93,7 @@ const initCode = () => {
     }
     decompress(base64, (code, err) => {
         if (err) {
-            console.error('Failed to decompress data: ' + err);
+            console.error('Failed to decompress data: ' + err + code);
             MicroModal.show('error-modal');
             return;
         }
@@ -289,6 +300,55 @@ const hash = function (str, seed = 0) {
     const h = 4294967296 * (2097151 & h2) + (h1 >>> 0);
     return h.toString(36).substr(0, 4).toUpperCase();
 };
+
+
+
+const updateMdPreview = () => {
+    const md = editor.getValue();
+    const converter = new showdown.Converter();
+    converter.setOption('tables', true);
+    converter.setOption('strikethrough', true);
+    const html = converter.makeHtml(md);
+    mdPreview.innerHTML = html;
+}
+
+const previewMarkdown = (enable = true) => {
+    if (enable) {
+        mdPreview.classList.remove('hidden');
+    } else {
+        mdPreview.classList.add('hidden');
+    }
+};
+
+
+
+const dragBar = document.getElementById('drag-bar');
+const editorDiv = document.getElementById('editor');
+const mdPreview = document.getElementById('md-preview');
+
+let isDragging = false;
+
+dragBar.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    e.preventDefault();
+});
+
+document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+
+    const containerRect = editorDiv.parentNode.getBoundingClientRect();
+    const newWidth = e.clientX - containerRect.left;
+
+    editorDiv.style.width = `${newWidth}px`;
+    mdPreview.style.flexGrow = '0';
+    mdPreview.style.width = `calc(100% - ${newWidth + 8}px)`;
+});
+
+document.addEventListener('mouseup', () => {
+    isDragging = false;
+});
+
+
 
 // Only for tests purposes
 const testAllModes = () => {

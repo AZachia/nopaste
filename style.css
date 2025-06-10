@@ -3,6 +3,8 @@
 html,
 body {
     height: 100%;
+    width: 100%;
+    overflow: hidden;
 }
 body {
     display: flex;
@@ -15,11 +17,128 @@ body {
     font-variant-ligatures: none;
 }
 
+
+#editor-container {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    min-height: 1px;
+}
+
 #editor {
     flex-grow: 1;
     margin-top: -3px;
     overflow: auto;
+    resize: horizontal;
+    overflow: auto;
+    width: 50%;
 }
+
+#md-preview {
+    flex-grow: 1;
+    overflow: auto;
+    padding: 10px;
+    background-color: #282a36;
+    color: #f8f8f2;
+    resize: horizontal;
+    overflow: auto;
+    width: 50%;
+}
+
+#md-preview * {
+    font-family: sans-serif;
+    font-size: 16px;
+}
+
+#md-preview h1 {
+    font-size: 2em;
+    font-weight: bold;
+}
+#md-preview h2 {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+#md-preview h3 {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+#md-preview h4 {
+    font-size: 1em;
+    font-weight: bold;
+}
+#md-preview h5 {
+    font-size: 0.9em;
+}
+#md-preview h6 {
+    font-size: 0.8em;
+}
+#md-preview pre {
+    background-color: #44475a;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+#md-preview code {
+    background-color: #44475a;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+#md-preview blockquote {
+    border-left: 4px solid #9da5d4;
+    padding-left: 10px;
+    color: #9da5d4;
+}
+#md-preview a {
+    color: #8be9fd;
+    text-decoration: none;
+}
+#md-preview a:hover {
+    text-decoration: underline;
+}
+#md-preview img {
+    max-width: 100%;
+    height: auto;
+}
+#md-preview table {
+    width: 100%;
+    border-collapse: collapse;
+}
+#md-preview th,
+#md-preview td {
+    border: 1px solid #44475a;
+    padding: 8px;
+}
+#md-preview th {
+    background-color: #44475a;
+    color: #f8f8f2;
+}
+#md-preview td {
+    background-color: #282a36;
+    color: #f8f8f2;
+}
+#md-preview ul,
+#md-preview ol {
+    padding-left: 20px;
+    margin: 10px 0;
+}
+#md-preview li {
+    margin: 5px 0;
+}
+#md-preview li ul,
+#md-preview li ol {
+    margin-top: 5px;
+}
+
+
+
+#drag-bar {
+    width: 4px;
+    background-color: #ccc;
+    cursor: col-resize;
+}
+
+
+
 
 #controls,
 #copy,
@@ -47,6 +166,10 @@ body.readonly:not(:hover) #footer {
 #copy-link {
     font-family: JetBrainsMono, sans-serif;
     width: 100%;
+}
+
+.hidden {
+    display: none;
 }
 
 /* Styling */
